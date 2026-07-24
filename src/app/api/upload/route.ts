@@ -52,16 +52,19 @@ const blob = await put(file.name, file, {
     return NextResponse.json({
       url: blob.url,
     });
-  } catch (error) {
-    console.error(error);
+ } catch (error) {
+  console.error("UPLOAD ERROR:", error);
 
-    return NextResponse.json(
-      {
-        error: "อัปโหลดไม่สำเร็จ",
-      },
-      {
-        status: 500,
-      }
-    );
-  }
+  return NextResponse.json(
+    {
+      error:
+        error instanceof Error
+          ? error.message
+          : JSON.stringify(error),
+    },
+    {
+      status: 500,
+    }
+  );
 }
+
