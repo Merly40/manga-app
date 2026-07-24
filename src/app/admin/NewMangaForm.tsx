@@ -8,7 +8,7 @@ const categories = ["แฟนตาซีโรแมนติก", "โรแ�
 
 type FormState = {
   title: string;
-  slug: string;
+  englishTitle: string;
   author: string;
   description: string;
   coverUrl: string;
@@ -21,7 +21,7 @@ type FormState = {
 
 const initialState: FormState = {
   title: "",
-  slug: "",
+  englishTitle: "",
   author: "",
   description: "",
   coverUrl: "",
@@ -55,27 +55,11 @@ export default function NewMangaForm() {
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState<FormState>(initialState);
-  const [slugTouched, setSlugTouched] = useState(false);
-  const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
   const change = (key: keyof FormState, value: string) => setForm((current) => ({ ...current, [key]: value }));
-
-  // พิมพ์ชื่อเรื่อง -> auto-gen slug ให้ทันที ตราบใดที่แอดมินยังไม่เคยแก้ช่อง slug เอง
-  function changeTitle(value: string) {
-    setForm((current) => ({
-      ...current,
-      title: value,
-      slug: slugTouched ? current.slug : slugify(value),
-    }));
-  }
-
-  // ถ้าแอดมินเริ่มแก้ช่อง slug เอง ให้หยุด auto-gen จาก title ทันที (เผื่ออยากตั้งเอง)
-  function changeSlug(value: string) {
-    setSlugTouched(true);
-    change("slug", value);
-  }
 
   async function uploadCover(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -111,7 +95,7 @@ export default function NewMangaForm() {
     }
 
     // sanitize slug อีกรอบก่อนส่ง กันพลาดกรณีแอดมินพิมพ์ช่อง slug เองแล้วมีอักขระแปลกๆ หลุดมา
-    const safeSlug = slugify(form.slug || form.title);
+    const safeSlug = slugify(form.englishTitle || form.title);
 
     setLoading(true);
     setError("");
@@ -128,7 +112,6 @@ export default function NewMangaForm() {
     }
 
     setForm(initialState);
-    setSlugTouched(false);
     if (fileRef.current) fileRef.current.value = "";
     router.refresh();
   }
@@ -140,14 +123,12 @@ export default function NewMangaForm() {
 
       <div className="space-y-4">
         <Field label="ชื่อมังงะ">
-          <input required className="soft-input" value={form.title} onChange={(e) => changeTitle(e.target.value)} placeholder="กรอกชื่อมังงะ" />
+          <input required className="soft-input" value={form.title} onChange={(e) => change("title", e.target.value)} placeholder="กรอกชื่อมังงะ" />
         </Field>
 
-        <Field label="Slug">
-          <input required className="soft-input" value={form.slug} onChange={(e) => changeSlug(e.target.value)} placeholder="the-villains-savior" />
-          <p className="mt-1 text-[11px] text-[#c9a8b2]">
-            ระบบสร้างให้อัตโนมัติจากชื่อเรื่อง แก้เองได้ถ้าต้องการ — ระบบจะตัดช่องว่าง/เครื่องหมายพิเศษให้เป็น "-" เสมอตอนบันทึก
-          </p>
+        <Field label="ชื่อภาษาอังกฤษ">
+          <input className="soft-input" value={form.englishTitle} onChange={(e)=>change("englishTitle",e.target.value)} placeholder="The Villains Savior" />
+          <p className="mt-1 text-[11px] text-[#c9a8b2]">ใช้สร้างลิงก์ของเรื่องอัตโนมัติ</p>
         </Field>
 
         <Field label="ผู้แต่ง"><input className="soft-input" value={form.author} onChange={(e) => change("author", e.target.value)} placeholder="ชื่อผู้แต่ง" /></Field>
