@@ -1,0 +1,2 @@
+import SavedMangaList from "@/components/SavedMangaList";
+export default function HistoryPage(){return <main className="mx-auto max-w-[1200px] px-6 py-8"><h1 className="font-display text-3xl font-bold text-[#623846]">ประวัติอ่านล่าสุด</h1><p className="mb-6 mt-2 text-sm text-[#a27886]">เรื่องและตอนที่เปิดอ่านล่าสุดบนอุปกรณ์นี้</p><SavedMangaList storageKey="manga-neko-history" emptyText="ยังไม่มีประวัติการอ่าน ลองเปิดอ่านมังงะสักตอนก่อนนะ"/></main>}

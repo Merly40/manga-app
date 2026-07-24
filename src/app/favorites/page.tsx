@@ -1,0 +1,2 @@
+import SavedMangaList from "@/components/SavedMangaList";
+export default function FavoritesPage(){return <main className="mx-auto max-w-[1200px] px-6 py-8"><h1 className="font-display text-3xl font-bold text-[#623846]">รายการโปรด</h1><p className="mb-6 mt-2 text-sm text-[#a27886]">มังงะที่คุณบันทึกไว้อ่านภายหลัง</p><SavedMangaList storageKey="manga-neko-favorites" emptyText="ยังไม่มีมังงะในรายการโปรด"/></main>}

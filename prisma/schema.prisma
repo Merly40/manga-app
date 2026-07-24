@@ -1,0 +1,139 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             String          @id @default(cuid())
+  name           String
+  email          String          @unique
+  passwordHash   String
+  role           String          @default("READER")
+  createdAt      DateTime        @default(now())
+  comments       Comment[]
+  notifications  Notification[]
+  purchases      Purchase[]
+  mangaPurchases MangaPurchase[]
+  follows        Follow[]
+  ratings        Rating[]
+}
+
+model Manga {
+  id             String          @id @default(cuid())
+  slug           String          @unique
+  title          String
+  description    String
+  coverUrl       String
+  author         String
+  status         String          @default("ongoing")
+  category       String          @default("แฟนตาซีโรแมนติก")
+  tags           String          @default("")
+  saleMode       String          @default("FREE")
+  fullPrice      Int             @default(0)
+  viewCount      Int             @default(0)
+  createdAt      DateTime        @default(now())
+  chapters       Chapter[]
+  mangaPurchases MangaPurchase[]
+  follows        Follow[]
+  ratings        Rating[]
+}
+
+model Chapter {
+  id          String     @id @default(cuid())
+  mangaId     String
+  manga       Manga      @relation(fields: [mangaId], references: [id], onDelete: Cascade)
+  number      Float
+  title       String
+  price       Int        @default(0)
+  pages       Page[]
+  comments    Comment[]
+  purchases   Purchase[]
+  publishedAt DateTime   @default(now())
+  @@unique([mangaId, number])
+}
+
+model Purchase {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapterId String
+  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  amount    Int
+  status    String   @default("PAID")
+  createdAt DateTime @default(now())
+  @@unique([userId, chapterId])
+}
+
+model MangaPurchase {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mangaId   String
+  manga     Manga    @relation(fields: [mangaId], references: [id], onDelete: Cascade)
+  amount    Int
+  status    String   @default("PAID")
+  createdAt DateTime @default(now())
+  @@unique([userId, mangaId])
+}
+
+// ใหม่: เก็บว่า user คนไหนติดตามเรื่องไหนบ้าง (ใช้แสดง "ติดตาม X คน" + เอาไว้ต่อยอดระบบแจ้งเตือนตอนใหม่ในอนาคต)
+model Follow {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mangaId   String
+  manga     Manga    @relation(fields: [mangaId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  @@unique([userId, mangaId])
+}
+
+// ใหม่: เก็บคะแนนให้ดาว 1-5 ของ user แต่ละคนต่อเรื่อง (ใช้คำนวณค่าเฉลี่ยตอนแสดงผล)
+model Rating {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mangaId   String
+  manga     Manga    @relation(fields: [mangaId], references: [id], onDelete: Cascade)
+  score     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([userId, mangaId])
+}
+
+model Page {
+  id        String  @id @default(cuid())
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  order     Int
+  imageUrl  String
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  chapterId String
+  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  body      String
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message   String
+  link      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model SiteSettings {
+  id              String   @id @default("singleton")
+  bannerImageUrl  String?
+  updatedAt       DateTime @updatedAt
+}
