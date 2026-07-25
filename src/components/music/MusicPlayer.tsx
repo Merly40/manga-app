@@ -13,7 +13,7 @@ import {
   X,
 } from "lucide-react";
 
-import { playlist } from "./Playlist";
+import { playlist } from "./PlaylistData";
 import { useMusic } from "./MusicContext";
 import "./music-princess.css";
 import MusicCover from "./MusicCover";

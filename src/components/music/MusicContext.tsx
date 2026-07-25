@@ -1,6 +1,6 @@
 "use client";
 import { createContext,useContext,useEffect,useRef,useState } from "react";
-import { playlist } from "./Playlist";
+import { playlist } from "./PlaylistData";
 type MusicContextType={playing:boolean;currentTrack:number;currentTime:number;duration:number;volume:number;uiOpen:boolean;toggle:()=>void;nextTrack:()=>void;prevTrack:()=>void;seek:(t:number)=>void;setVolume:(v:number)=>void;setUiOpen:(v:boolean)=>void;};
 const MusicContext=createContext<MusicContextType|null>(null);
 export function MusicProvider({children}:{children:React.ReactNode}){const audioRef=useRef(new Audio());const[playing,setPlaying]=useState(false);const[currentTrack,setCurrentTrack]=useState(0);const[currentTime,setCurrentTime]=useState(0);const[duration,setDuration]=useState(0);const[volume,setVolume]=useState(.4);const[uiOpen,setUiOpen]=useState(true);

@@ -1,6 +1,6 @@
 "use client";
 
-import { playlist } from "./Playlist";
+import { playlist } from "./PlaylistData";
 import { useMusic } from "./MusicContext";
 
 export default function PlaylistPanel() {
