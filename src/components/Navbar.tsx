@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { Cat, Sparkles } from "lucide-react";
 import NotificationBell from "./NotificationBell";
 import NightModeToggle from "./NightModeToggle";
 
@@ -10,6 +11,19 @@ const Icon = ({ d }: { d: string }) => (
   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
     <path d={d} strokeLinecap="round" strokeLinejoin="round" />
   </svg>
+);
+
+// ปุ่ม "เติมพอยต์" แบบพิเศษ (CTA) แยกออกจากลิงก์เมนูปกติ
+// ใช้สีเดียวกันทั้งโหมดสว่าง/มืด ไม่สลับเฉด เพื่อไม่ให้ดูเพี้ยนคนละสี
+const TopupPill = ({ className = "" }: { className?: string }) => (
+  <Link
+    href="/topup"
+    className={`flex items-center gap-1.5 whitespace-nowrap rounded-full bg-gradient-to-r from-[#ff5c8a] to-[#e8407a] px-4 py-2 text-sm font-extrabold text-white shadow-md shadow-pink-500/40 ring-1 ring-white/40 transition hover:scale-105 hover:shadow-lg hover:shadow-pink-500/50 ${className}`}
+  >
+    <Cat className="h-4 w-4 shrink-0 drop-shadow-sm" />
+    <span className="drop-shadow-sm">เติมพอยต์</span>
+    <Sparkles className="h-3.5 w-3.5 shrink-0 drop-shadow-sm" />
+  </Link>
 );
 
 export default function Navbar() {
@@ -26,6 +40,7 @@ export default function Navbar() {
     }`;
   };
 
+  // เอา "เติมพอยต์" ออกจากลิสต์ปกติ เพราะจะแสดงเป็นปุ่ม CTA แยกต่างหาก
   const navLinks = [
     { href: "/", label: "หน้าหลัก" },
     { href: "/categories", label: "หมวดหมู่" },
@@ -45,12 +60,13 @@ export default function Navbar() {
             Manhwa Duchess
           </Link>
 
-          <nav className="hidden flex-1 items-center justify-center gap-1.5 whitespace-nowrap text-[13px] font-medium lg:flex">
+          <nav className="hidden flex-1 items-center justify-center gap-2 whitespace-nowrap text-[13px] font-medium lg:flex">
             {navLinks.map((l) => (
               <Link key={l.href} href={l.href} className={navLinkClass(l.href)}>
                 {l.label}
               </Link>
             ))}
+            <TopupPill className="mx-2" />
             {role === "ADMIN" && (
               <Link href="/admin" className={navLinkClass("/admin") + " font-semibold"}>
                 จัดการมังงะ
@@ -108,12 +124,13 @@ export default function Navbar() {
           </div>
         </div>
 
-        <nav className="mx-auto flex max-w-[1400px] gap-1.5 overflow-x-auto whitespace-nowrap px-5 pb-3 text-[13px] font-medium lg:hidden">
+        <nav className="mx-auto flex max-w-[1400px] items-center gap-2 overflow-x-auto whitespace-nowrap px-5 pb-3 text-[13px] font-medium lg:hidden">
           {navLinks.map((l) => (
             <Link key={l.href} href={l.href} className={navLinkClass(l.href)}>
               {l.label}
             </Link>
           ))}
+          <TopupPill />
           {role === "ADMIN" && (
             <Link href="/admin" className={navLinkClass("/admin") + " font-semibold"}>
               จัดการมังงะ

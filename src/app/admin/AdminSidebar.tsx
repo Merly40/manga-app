@@ -12,6 +12,10 @@ import {
   FileStack,
   Music2,
   Settings2,
+  Coins,
+  CreditCard,
+  ReceiptText,
+  ImageIcon,
   ChevronDown,
   type LucideIcon,
 } from "lucide-react";
@@ -36,6 +40,32 @@ const NAV: NavGroup[] = [
     icon: Music2,
     children: [{ label: "รายการคำขอเพลง", href: "/admin/song-requests", icon: Music2 }],
   },
+  {
+  label: "เติมพอยต์",
+  icon: Coins,
+  children: [
+    {
+      label: "Banner เติมพอยต์",
+      href: "/admin/settings/topup",
+      icon: ImageIcon,
+    },
+    {
+      label: "แพ็กเกจเติมพอยต์",
+      href: "/admin/settings/topup/packages",
+      icon: Coins,
+    },
+    {
+      label: "รายการเติมเงิน",
+      href: "/admin/topup",
+      icon: ReceiptText,
+    },
+    {
+      label: "PromptPay",
+      href: "/admin/topup/payment",
+      icon: CreditCard,
+    },
+  ],
+},  
   {
     label: "ตั้งค่าเว็บไซต์",
     icon: Settings2,

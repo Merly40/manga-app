@@ -134,9 +134,36 @@ model Notification {
 }
 
 model SiteSettings {
-  id              String   @id @default("singleton")
-  bannerImageUrl  String?
-  updatedAt       DateTime @updatedAt
+  id               String   @id @default("singleton")
+
+  // หน้าเว็บ
+  bannerImageUrl   String?
+
+  // หน้าเติมพอยต์
+  topupBannerUrl   String?
+
+  updatedAt        DateTime @updatedAt
+}
+
+model TopupPackage {
+  id          String   @id @default(cuid())
+
+  title       String
+  description String?
+
+  price       Int
+  coins       Int
+
+  imageUrl    String?
+
+  bonusCoins  Int      @default(0)
+
+  sortOrder   Int      @default(0)
+
+  enabled     Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 // ใหม่: เก็บคำขอเพลงจากผู้ใช้ (จากปุ่ม "ขอเพลง" ใน MusicPlayer) ให้แอดมินดู/เปลี่ยนสถานะ/ลบได้ในหน้า /admin/song-requests
