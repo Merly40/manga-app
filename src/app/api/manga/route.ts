@@ -18,15 +18,35 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "ไม่มีสิทธิ์" }, { status: 403 });
   }
 
-  const { title, slug, description, coverUrl, author, status, category, tags, saleMode, fullPrice } = await req.json();
-  if (!title || !slug) {
-    return NextResponse.json({ error: "ต้องระบุชื่อเรื่องและ slug" }, { status: 400 });
-  }
+  const {
+  title,
+  slug,
+  englishTitle,
+  description,
+  coverUrl,
+  author,
+  status,
+  category,
+  tags,
+  saleMode,
+  fullPrice,
+} = await req.json();
+  if (!title) {
+  return NextResponse.json(
+    { error: "ต้องระบุชื่อเรื่อง" },
+    { status: 400 }
+  );
+}
+
+const finalSlug =
+  slug ||
+  `${title}-${Math.random().toString(36).slice(2, 8)}`;
 
   const manga = await prisma.manga.create({
-    data: {
+      data: {
       title,
-      slug,
+      slug: finalSlug,
+      englishTitle,
       description: description || "",
       coverUrl: coverUrl || "",
       author: author || "",

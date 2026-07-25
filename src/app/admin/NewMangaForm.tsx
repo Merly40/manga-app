@@ -95,7 +95,10 @@ export default function NewMangaForm() {
     }
 
     // sanitize slug อีกรอบก่อนส่ง กันพลาดกรณีแอดมินพิมพ์ช่อง slug เองแล้วมีอักขระแปลกๆ หลุดมา
-    const safeSlug = slugify(form.englishTitle || form.title);
+    const random = Math.random().toString(36).slice(2, 8);
+
+    const safeSlug =
+     `${slugify(form.englishTitle || form.title)}-${random}`;
 
     setLoading(true);
     setError("");
