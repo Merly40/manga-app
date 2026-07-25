@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, type ComponentType } from "react";
+import { useState } from "react";
 import {
   LayoutGrid,
   Library,
@@ -13,9 +13,10 @@ import {
   Music2,
   Settings2,
   ChevronDown,
+  type LucideIcon,
 } from "lucide-react";
 
-type IconType = ComponentType<{ size?: number; className?: string }>;
+type IconType = LucideIcon;
 
 type NavChild = { label: string; href: string; icon: IconType };
 type NavGroup = { label: string; icon: IconType; children: NavChild[] };
