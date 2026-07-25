@@ -8,28 +8,29 @@ import TopupSteps from "@/components/topup/TopupSteps";
 
 export default async function TopupPage() {
   const packages = await prisma.topupPackage.findMany({
-  const settings = await prisma.siteSettings.findUnique({
+  where: {
+    enabled: true,
+  },
+  orderBy: [
+    {
+      sortOrder: "asc",
+    },
+    {
+      price: "asc",
+    },
+  ],
+});
+
+const settings = await prisma.siteSettings.findUnique({
   where: {
     id: "singleton",
   },
 });
-    where: {
-      enabled: true,
-    },
-    orderBy: [
-      {
-        sortOrder: "asc",
-      },
-      {
-        price: "asc",
-      },
-    ],
-  });
 
   return (
     <main className="mx-auto max-w-7xl space-y-8 px-4 py-8">
 
-      <TopupBanner bannerUrl={settings.topupBannerUrl} />
+      <TopupBanner bannerUrl={settings?.topupBannerUrl} />
 
       <section className="grid gap-8 lg:grid-cols-[2fr_420px]">
 
