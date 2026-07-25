@@ -1,0 +1,42 @@
+.music-card{
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(18px);
+  border:1px solid #f7c8dc;
+  border-radius:24px;
+  box-shadow:0 10px 30px rgba(236,72,153,.15);
+  color:#3f2a3a;
+}
+.music-title{color:#ec4899;font-weight:700;}
+.music-cover{width:88px;height:88px;border-radius:9999px;object-fit:cover;border:4px solid #ffd6ea;box-shadow:0 0 18px rgba(236,72,153,.2);}
+.music-btn{transition:.2s;}
+.music-btn:hover{transform:scale(1.05);}
+.dark .music-card{background:#211c31;border:1px solid #4d4368;color:#f3f3f3;box-shadow:0 10px 35px rgba(0,0,0,.45);}
+.dark .music-title{color:#ff73ba;}
+.dark .music-card p,.dark .music-card span,.dark .music-card div{color:#ececec;}
+.dark .music-card .text-gray-500{color:#bfb8cf !important;}
+.dark .music-cover{border-color:#ff9fd4;}
+.dark .music-card button{color:white;}
+.dark .music-card button.bg-pink-500{background:#ec4899;color:white;}
+.dark .music-card .bg-pink-100{background:#342844 !important;}
+.dark .music-card .hover\:bg-pink-50:hover{background:#403153 !important;}
+
+/* ===== Request a song ===== */
+.request-song{max-height:min(70vh,560px);overflow-y:auto;padding-right:2px;}
+.request-input{
+  width:100%;
+  border-radius:14px;
+  border:1px solid #f0d2df;
+  background:#fff;
+  padding:10px 14px;
+  font-size:13px;
+  color:#5d3542;
+  outline:none;
+  transition:.2s;
+}
+.request-input::placeholder{color:#c9a8b2;}
+.request-input:focus{border-color:#ec4899;box-shadow:0 0 0 3px rgba(236,72,153,.12);}
+.dark .request-song{color:#f0dde3;}
+.dark .request-song > div[class*="border-[#f6d9e6]"]{border-color:#3d222c !important;background:#20141a !important;}
+.dark .request-input{background:#241521;border-color:#4d3345;color:#f0dde3;}
+.dark .request-input::placeholder{color:#8f6b78;}
+.dark .song-request-btn{background:#20141a !important;border-color:#4d3345 !important;}

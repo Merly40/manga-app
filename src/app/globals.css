@@ -100,3 +100,17 @@ html.dark [class*="bg-[#f7f4ff]"]{background-color:#130a2a !important;}
 html.dark [class*="text-[#8c79c9]"]{color:#cfc8e5 !important;}
 html.dark [class*="border-[#eccfd8]"]{border-color:#271219 !important;}
 html.dark [class*="text-[#5d3542]"]{color:#efe6e9 !important;}
+
+@keyframes slow-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: slow-spin 4s linear infinite;
+}

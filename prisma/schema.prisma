@@ -137,3 +137,16 @@ model SiteSettings {
   bannerImageUrl  String?
   updatedAt       DateTime @updatedAt
 }
+
+// ใหม่: เก็บคำขอเพลงจากผู้ใช้ (จากปุ่ม "ขอเพลง" ใน MusicPlayer) ให้แอดมินดู/เปลี่ยนสถานะ/ลบได้ในหน้า /admin/song-requests
+// status: PENDING (รอดำเนินการ) | ADDED (เพิ่มแล้ว) | REJECTED (ปฏิเสธ)
+model SongRequest {
+  id         String   @id @default(cuid())
+  title      String
+  artist     String?
+  link       String?
+  note       String?
+  categories String   @default("")
+  status     String   @default("PENDING")
+  createdAt  DateTime @default(now())
+}

@@ -34,6 +34,9 @@ export default async function AdminSettingsPage() {
           <Link href="/admin/settings" className="mb-1 block rounded-xl bg-[#fde4ec] px-4 py-3 text-sm font-semibold text-[#df6488]">
             ตั้งค่าเว็บไซต์
           </Link>
+          <Link href="/admin/song-requests" className="mb-1 block rounded-xl px-4 py-3 text-sm text-[#805764]">
+            คำขอเพลง
+          </Link>
         </aside>
 
         <section>
