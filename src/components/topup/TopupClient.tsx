@@ -89,8 +89,6 @@ export default function TopupClient({ packages }: Props) {
           หรือกรอกจำนวนพอยต์ที่ต้องการ
         </h3>
 
-        <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">พอยต์ละ 1 บาท</p>
-
         <input
           type="number"
           min={0}
