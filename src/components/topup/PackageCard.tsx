@@ -80,7 +80,7 @@ export default function PackageCard({
       </div>
 
       <p className="mt-2.5 text-center text-[11px] text-zinc-500 dark:text-zinc-400">
-        พอยต์ละ 1 บาท
+        ถูกที่สุด!
       </p>
     </button>
   );
