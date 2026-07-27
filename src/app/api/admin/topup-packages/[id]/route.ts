@@ -19,6 +19,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   if (body.coins !== undefined) data.coins = Number(body.coins);
   if (body.bonusCoins !== undefined) data.bonusCoins = Number(body.bonusCoins);
   if (body.imageUrl !== undefined) data.imageUrl = body.imageUrl;
+  if (body.sortOrder !== undefined) data.sortOrder = Number(body.sortOrder); // <-- บรรทัดใหม่ที่เพิ่ม
 
   const updated = await prisma.topupPackage.update({
     where: { id: params.id },
