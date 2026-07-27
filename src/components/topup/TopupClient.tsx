@@ -17,20 +17,42 @@ type Props = {
   packages: TopupPackage[];
 };
 
+const MIN_BONUS_COINS = 100;
+
 export default function TopupClient({ packages }: Props) {
   const [selectedId, setSelectedId] = useState(packages[0]?.id ?? "");
-
   const [customCoins, setCustomCoins] = useState(0);
 
   const selectedPackage = useMemo(() => {
     return packages.find((p) => p.id === selectedId);
   }, [packages, selectedId]);
 
+  // สร้างขั้นบันไดโบนัส % จากแพ็กเกจจริงที่แอดมินตั้งไว้ (เรียงจากน้อยไปมาก)
+  // ใช้ค่านี้คำนวณโบนัสให้ฝั่ง "กรอกจำนวนเอง" ด้วย จะได้สมส่วนกับแพ็กเกจเสมอ
+  const bonusTiers = useMemo(() => {
+    return packages
+      .filter((p) => p.coins > 0)
+      .map((p) => ({ minCoins: p.coins, percent: p.bonusCoins / p.coins }))
+      .sort((a, b) => a.minCoins - b.minCoins);
+  }, [packages]);
+
+  function calcCustomBonus(coins: number) {
+    if (coins < MIN_BONUS_COINS || bonusTiers.length === 0) return 0;
+    let percent = 0;
+    for (const tier of bonusTiers) {
+      if (coins >= tier.minCoins) percent = tier.percent;
+    }
+    return Math.floor(coins * percent);
+  }
+
   const usingCustom = customCoins > 0;
 
   const totalCoins = usingCustom ? customCoins : (selectedPackage?.coins ?? 0);
 
-  const totalBonus = usingCustom ? 0 : (selectedPackage?.bonusCoins ?? 0);
+  const totalBonus = usingCustom ? calcCustomBonus(customCoins) : (selectedPackage?.bonusCoins ?? 0);
+
+  const customBonusPercent =
+    usingCustom && customCoins > 0 ? Math.round((totalBonus / customCoins) * 100) : 0;
 
   const totalPrice = usingCustom ? customCoins : (selectedPackage?.price ?? 0);
 
@@ -89,6 +111,10 @@ export default function TopupClient({ packages }: Props) {
           หรือกรอกจำนวนพอยต์ที่ต้องการ
         </h3>
 
+        <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+          พอยต์ละ 1 บาท · รับโบนัสเพิ่มเมื่อเติมตั้งแต่ {MIN_BONUS_COINS.toLocaleString()} พอยต์ขึ้นไป
+        </p>
+
         <input
           type="number"
           min={0}
@@ -123,7 +149,14 @@ export default function TopupClient({ packages }: Props) {
           </div>
 
           <div className="flex items-center justify-between text-sm text-zinc-600 dark:text-zinc-300">
-            <span>โบนัส</span>
+            <span className="flex items-center gap-1.5">
+              โบนัส
+              {usingCustom && customBonusPercent > 0 && (
+                <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] font-bold text-pink-600 dark:bg-pink-500/15 dark:text-pink-300">
+                  +{customBonusPercent}%
+                </span>
+              )}
+            </span>
             <span className="font-bold text-pink-500 dark:text-pink-300">
               +{totalBonus.toLocaleString()}
             </span>

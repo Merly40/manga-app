@@ -79,9 +79,6 @@ export default function PackageCard({
         ฿ {price.toLocaleString()}
       </div>
 
-      <p className="mt-2.5 text-center text-[11px] text-zinc-500 dark:text-zinc-400">
-        ถูกที่สุด!
-      </p>
     </button>
   );
 }
